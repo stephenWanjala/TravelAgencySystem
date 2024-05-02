@@ -2,6 +2,4 @@ package github.stephenwanjala.travelagency.model;
 
 import org.jetbrains.annotations.NotNull;
 
-public record Customer(@NotNull String id, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {
-
-}
+public record Customer(@NotNull int id, @NotNull String name,@NotNull String email) {}
