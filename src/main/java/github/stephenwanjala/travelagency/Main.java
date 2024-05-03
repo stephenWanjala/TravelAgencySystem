@@ -20,6 +20,7 @@ public class Main extends JFrame {
             mainFrame.getBookingPanel().setBookingDAO(bookingDAO);
 
             mainFrame.setVisible(true);
+            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
     }
 
