@@ -1,5 +1,7 @@
 package github.stephenwanjala.travelagency.model;
 
+import javax.annotation.processing.Generated;
+
 public class Flight {
     private int id;
     private String origin;

@@ -62,7 +62,7 @@ public class FlightDAOImpl implements FlightDAO {
              PreparedStatement stmt = conn.prepareStatement(INSERT_FLIGHT, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, flight.getOrigin());
             stmt.setString(2, flight.getDestination());
-            stmt.setInt(3, flight.getId());
+            stmt.setInt(3, flight.getAvailableSeats());
             stmt.executeUpdate();
 
             ResultSet generatedKeys = stmt.getGeneratedKeys();
