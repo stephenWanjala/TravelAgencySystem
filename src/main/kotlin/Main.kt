@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.navigation.compose.rememberNavController
+import data.getDatabaseBuilder
+import data.getRoomDatabase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
