@@ -7,13 +7,14 @@ import github.stephenwanjala.travelagency.view.FlightPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 
 public class TravelAgencyGUI extends JFrame {
     private CustomerPanel customerPanel;
     private FlightPanel flightPanel;
     private BookingPanel bookingPanel;
 
-    public TravelAgencyGUI() {
+    public TravelAgencyGUI() throws SQLException {
         setTitle("Travel Agency Application");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 800);
@@ -27,7 +28,7 @@ public class TravelAgencyGUI extends JFrame {
         // Initialize panels with DAOs
         customerPanel = new CustomerPanel(customerDAO);
         flightPanel = new FlightPanel(flightDAO);
-        bookingPanel = new BookingPanel(bookingDAO);
+        bookingPanel = new BookingPanel(customerDAO, flightDAO, bookingDAO);
 
         // Create a tabbed pane to organize different functionalities
         JTabbedPane tabbedPane = new JTabbedPane();

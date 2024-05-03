@@ -9,5 +9,5 @@ public interface BookingDAO {
     Booking getBookingById(int id);
     void addBooking(Booking booking);
     void deleteBooking(int id);
-    void bookFlight(int customerId, int flightId);
+//    void bookFlight(int customerId, int flightId);
 }

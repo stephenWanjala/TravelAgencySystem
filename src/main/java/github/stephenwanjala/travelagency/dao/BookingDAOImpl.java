@@ -14,80 +14,83 @@ public class BookingDAOImpl implements BookingDAO {
     private static final String DELETE_BOOKING = "DELETE FROM Bookings WHERE id = ?";
     private static final String BOOK_FLIGHT = "UPDATE Flights SET available_seats = available_seats - 1 WHERE id = ?";
 
+    private Connection connection; // Connection member
+
+    public BookingDAOImpl() throws SQLException {
+        this.connection = DatabaseUtil.getConnection();
+    }
+
     @Override
     public List<Booking> getAllBookings() {
         List<Booking> bookings = new ArrayList<>();
-        try (Connection conn = DatabaseUtil.getConnection(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(SELECT_ALL_BOOKINGS)) {
+        try (Statement stmt = connection.createStatement(); ResultSet rs = stmt.executeQuery(SELECT_ALL_BOOKINGS)) {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 int customerId = rs.getInt("customer_id");
                 int flightId = rs.getInt("flight_id");
-                bookings.add(new Booking(-1, customerId, flightId));
+                bookings.add(new Booking(id, customerId, flightId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.printf("Error %s\n", e.getMessage());
-            System.out.printf("Error getting all bookings%n");
+            System.out.printf("Error getting all bookings: %s\n", e.getMessage());
         }
         return bookings;
     }
 
     @Override
     public Booking getBookingById(int id) {
-        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(SELECT_BOOKING_BY_ID)) {
+        try (PreparedStatement stmt = connection.prepareStatement(SELECT_BOOKING_BY_ID)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     int customerId = rs.getInt("customer_id");
                     int flightId = rs.getInt("flight_id");
-
                     return new Booking(id, customerId, flightId);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.printf("Error %s\n", e.getMessage());
-            System.out.printf("Error getting booking with id %d%n", id);
+            System.out.printf("Error getting booking with id %d: %s\n", id, e.getMessage());
         }
         return null;
     }
 
     @Override
     public void addBooking(Booking booking) {
-        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(INSERT_BOOKING)) {
+        try (PreparedStatement stmt = connection.prepareStatement(INSERT_BOOKING)) {
             stmt.setInt(1, booking.customerId());
             stmt.setInt(2, booking.flightId());
             stmt.executeUpdate();
-            bookFlight(booking.flightId(), booking.customerId());
+            bookFlight(booking.flightId()); // Update flight available seats
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.printf("Error %s\n", e.getMessage());
-            System.out.printf("Error adding booking for customer %d%n", booking.customerId());
+            System.out.printf("Error adding booking for customer %d: %s\n", booking.customerId(), e.getMessage());
         }
     }
 
     @Override
     public void deleteBooking(int id) {
-        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(DELETE_BOOKING)) {
+        try (PreparedStatement stmt = connection.prepareStatement(DELETE_BOOKING)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.printf("Error %s\n", e.getMessage());
-            System.out.printf("Error deleting booking with id %d%n", id);
+            System.out.printf("Error deleting booking with id %d: %s\n", id, e.getMessage());
         }
     }
 
-    @Override
-    public void bookFlight(int customerId, int flightId) {
-        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement stmt = conn.prepareStatement(BOOK_FLIGHT)) {
+//    @Override
+//    public void bookFlight(int customerId, int flightId) {
+//
+//    }
+
+    private void bookFlight(int flightId) {
+        try (PreparedStatement stmt = connection.prepareStatement(BOOK_FLIGHT)) {
             stmt.setInt(1, flightId);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.printf("Error %s\n", e.getMessage());
-            System.out.printf("Error booking flight with id %d%n", flightId);
+            System.out.printf("Error booking flight with id %d: %s\n", flightId, e.getMessage());
         }
-
     }
 }
