@@ -1,6 +1,7 @@
-# Pseudo Travel Agency System
+# Pseudo Travel Agency System 
+> Made With Kotlin ,Compose Desktop And Ktor 😉
 
->configuration
-> <p>To run the backend You Need The Following environment variables</p>
-> - JWT_SECRET
-> - mongoPassword->The Database Password
+configuration
+ - To run the backend You Need The Following environment variables
+   - JWT_SECRET
+   - mongoPassword->The Database Password
