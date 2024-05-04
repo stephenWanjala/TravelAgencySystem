@@ -11,6 +11,7 @@ import com.github.stephenwanjala.auth.security.token.TokenConfig
 import com.github.stephenwanjala.auth.security.token.TokenService
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -93,5 +94,15 @@ fun Route.signIn(
                 phoneNumber = userExist.phoneNumber
             )
         )
+    }
+}
+
+
+fun Route.authenticate(){
+    authenticate {
+        get("/authenticate"){
+            val principal = call.principal<UserIdPrincipal>()
+            call.respond(HttpStatusCode.OK, "Authenticated")
+        }
     }
 }

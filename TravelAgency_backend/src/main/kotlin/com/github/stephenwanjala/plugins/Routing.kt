@@ -1,6 +1,7 @@
 package com.github.stephenwanjala.plugins
 
 import com.github.stephenwanjala.auth.domain.repository.AuthRepository
+import com.github.stephenwanjala.auth.routes.authenticate
 import com.github.stephenwanjala.auth.routes.signIn
 import com.github.stephenwanjala.auth.routes.signUp
 import com.github.stephenwanjala.auth.security.hashing.HashingService
@@ -23,5 +24,7 @@ fun Application.configureRouting(
             tokenService = tokenService,
             config = config
         )
+
+        authenticate()
     }
 }
